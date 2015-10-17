@@ -17,6 +17,6 @@ $testHead="Logiks Testing Kit 1.0";
 	<meta http-equiv='pragma' content='no-cache'>
 </head>
 <body>
-Test Cases
+Testing
 </body>
 </html>
