@@ -1,6 +1,18 @@
 <?php
 $testHead="Logiks Testing Kit 1.0";
 
+$logiksPath=dirname(__FILE__)."/";
+$logiksFolder=basename($logiksPath)."/";
+$resourcePath="http://{$_SERVER["HTTP_HOST"]}/{$logiksFolder}";
+//$urlPath="http://{$_SERVER["HTTP_HOST"]}/{$logiksFolder}{$testApp}";
+
+$css=array(
+		"{$resourcePath}misc/themes/default/jquery.ui.css",
+	);
+$js=array(
+		"{$resourcePath}api/js/jquery/jquery.js",
+		"{$resourcePath}api/js/jquery/jquery.ui.js",
+	);
 ?>
 <!DOCTYPE html>
 <html>
@@ -15,10 +27,21 @@ $testHead="Logiks Testing Kit 1.0";
 	<meta http-equiv='content-language' content='en' />
 	<meta http-equiv='cache-control' content='no-store, must-revalidate, post-check=0, pre-check=0' />
 	<meta http-equiv='pragma' content='no-cache' />
+
+	<?php
+		foreach ($css as $url) {
+			echo "<link type='text/css' rel='stylesheet' href='{$url}' />";
+		}
+	?>
 </head>
 <body>
 
 </body>
+	<?php
+		foreach ($js as $url) {
+			echo "<script src='{$url}' type='text/javascript' language='javascript'></script>";
+		}
+	?>
 <script>
 $(function() {
 
