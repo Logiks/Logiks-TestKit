@@ -1,2 +1,14 @@
 # Logiks-TestKit
-Logiks Test Kit is a system built upon Logiks for running various kinds of testing and  ease up test driven systems.
+
+Required/Supported Tools
+	PHPUnit
+
+
+Types Of Testing Suites Supported
+	Unit tests
+	Integration tests
+
+
+
+
+Find more documentation at http://apidocs.openlogiks.org/
