@@ -1,0 +1,8 @@
+/tmp/
+/todo.txt
+demo.html
+.scrutinizer.yml
+.travis.yml
+composer.json
+phpcs.xml
+phpdoc.xml
