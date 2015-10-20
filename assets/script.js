@@ -99,7 +99,7 @@ function loadTest(src) {
     html+="<div class='ajaxloading large'></div>";
     html+="</div>";
     html+="<div class='panel-footer'>";
-    html+="<a class='pull-right' href='#' onclick='toggleDebugInfo(this)' title='Toggle Complete Debug Information'><span class='fa fa-eye'></span></a>";
+    html+="<a class='debugInfo pull-right' href='#' onclick='toggleDebugInfo(this)' title='Toggle Complete Debug Information'><span class='fa fa-eye'></span></a>";
     html+="<a href='#' onclick='removeTestResult(this)' title='Remove Test Result'><span class='fa fa-remove'></span></a>";
     html+="</div>";
     html+="</div></div></div>";
@@ -108,18 +108,19 @@ function loadTest(src) {
     
     $("#pageWrapper .row[id='"+testid+"'][hash='"+hash+"'] .panel-body").load(getCompLink('testcase')+"&src="+test,function() {
         ROW=$(this).closest(".row");
-        if($(this).find(".stats").hasClass("success")) {
+        if($(this).find(".stats").hasClass("success") || ROW.find(".defect").length<=0) {
             ROW.find(".panel-heading .label").removeClass("label-primary").addClass("label-success").text("SUCCESS");
+            ROW.find(".panel-footer .debugInfo").detach();
         } else if($(this).find(".stats").hasClass("warning")) {
             ROW.find(".panel-heading .label").removeClass("label-primary").addClass("label-warning").text("WARNING");
         } else {
             ROW.find(".panel-heading .label").removeClass("label-primary").addClass("label-danger").text("FAILED");
         }
-        if(ROW.find(".panel-body input[name=coverage]").val().length>0) {
+        if(ROW.find(".panel-body input[name=coverage]").length>0 && ROW.find(".panel-body input[name=coverage]").val().length>0) {
             html="<a href='"+ROW.find(".panel-body input[name=coverage]").val()+"' target=_blanktitle='Code Coverage Log'><span class='fa fa-code'></span></a>";
             ROW.find(".panel-footer").append(html);
         }
-        if(ROW.find(".panel-body input[name=log]").val().length>0) {
+        if(ROW.find(".panel-body input[name=log]").length>0 && ROW.find(".panel-body input[name=log]").val().length>0) {
             html="<a href='"+ROW.find(".panel-body input[name=log]").val()+"' target=_blank title='Test Run Log'><span class='fa fa-road'></span></a>";
             ROW.find(".panel-footer").append(html);
         }
@@ -139,7 +140,7 @@ function clearWindow() {
 
 //DEBUG Box functions
 function toggleDebugInfo(tag) {
-    $(tag).closest(".row").find(".panel-body pre").toggle();
+    $(tag).closest(".row").find(".panel-body pre, .panel-body .defect").toggle();
 }
 function removeTestResult(tag) {
     $(tag).closest(".row").fadeOut().detach();

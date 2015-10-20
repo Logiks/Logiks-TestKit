@@ -7,8 +7,25 @@ if(!function_exists("findTestCases")) {
 
 	function checkTestEnviroment() {
 		//check phpunit
+		// make sure PHPUnit is autoloaded
+		require_once('PHPUnit/Autoload.php');
+		
+		if(!class_exists("PHPUnit_Runner_Version")) return false;
+	
+		$version = PHPUnit_Runner_Version::id();
+		if (version_compare($version, "3.6.0") < 0) {
+			echo "<h3>Sorry, this version of PHPUnit ($version) is not supported, minimum 3.6.0 is requried.</h3>";
+			return false;
+		}
+		return true;
 	}
 	function setupEnviroment() {
+		define('WEBROOT',"http://{$_SERVER["HTTP_HOST"]}".dirname($_SERVER['REQUEST_URI'])."/");
+
+		$_ENV['logiksPath']=ROOT;
+		$_ENV['logiksFolder']=basename(ROOT)."/";
+		$_ENV['resourcePath']="http://{$_SERVER["HTTP_HOST"]}/{$_ENV['logiksFolder']}";
+
 		if(!is_dir($_ENV['tmpPath'])) {
 			mkdir($_ENV['tmpPath'],0777,true);
 		}

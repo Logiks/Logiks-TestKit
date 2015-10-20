@@ -2,18 +2,19 @@
 // The configurations for testKit
 if(!defined('TEST_ROOT')) exit('Only Test System Should Access Me');
 
+define('ROOT',dirname(__DIR__)."/");
+
+$testHead="Logiks Testing Kit v1.0";
+
+//$_ENV['tmpPath']=ROOT."/tmp/testKit/";
+$_ENV['tmpPath']=TEST_ROOT."/tmp/";
 
 $_ENV['errorComp']=TEST_ROOT."comps/error.php";
-$_ENV['logiksPath']=dirname(__DIR__)."/";
-$_ENV['logiksFolder']=basename($_ENV['logiksPath'])."/";
-$_ENV['resourcePath']="http://{$_SERVER["HTTP_HOST"]}/{$_ENV['logiksFolder']}";
-$_ENV['urlPath']=$_ENV['resourcePath'].basename(__DIR__)."/";
-$_ENV['tmpPath']=dirname(__DIR__)."/tmp/testKit/";
 
-$_ENV['boostrap']=__DIR__."/test_bootstrap.php";
+$_ENV['TEST_PRINTER']="Logiks_Printer";
 
-$_ENV['PHPUNIT_PATH']="phpunit";
 $_ENV['PHPUNIT_PARAMS']="--verbose";//--verbose  --tap  --debug
 
-$_ENV['ENABLE_LOGS']=true;
+$_ENV['ENABLE_LOGS']=false;
+
 ?>

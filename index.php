@@ -8,13 +8,10 @@
  */
 if(defined('ROOT')) exit('Only Direct Access Is Allowed');
 
-define('ROOT',dirname(dirname(__FILE__)) . '/');
 define('TEST_ROOT',dirname(__FILE__) . '/');
 
 include_once TEST_ROOT."config.php";
 include_once TEST_ROOT."api.php";
-
-$testHead="Logiks Testing Kit v1.0";
 
 setupEnviroment();
 
@@ -27,7 +24,8 @@ if(isset($_GET['comp'])) {
 	}
 } else {
 	//Load Manager UI
-	checkTestEnviroment();
-	include_once TEST_ROOT."comps/ui.php";
+	if(checkTestEnviroment()) {
+		include_once TEST_ROOT."comps/ui.php";
+	}
 }
 ?>
