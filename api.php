@@ -47,35 +47,41 @@ if(!function_exists("findTestCases")) {
 		}
 		setcookie("theme",$theme);
 		$_ENV['theme']=$theme;
+		
+		if(!is_array($_ENV['EXCLUDE_SEARCH'])) {
+			$_ENV['EXCLUDE_SEARCH']=explode(",",$_ENV['EXCLUDE_SEARCH']);
+		}
 	}
 	function findTestGroups() {
-		$final=array("Logiks Core"=>"./");
-
-		$appFolder=ROOT."apps/";
-		$fs=scandir($appFolder);
+		$final=array("My Tests"=>TEST_ROOT);
 		
-		foreach ($fs as $dir) {
-			$f=$appFolder.$dir."/apps.cfg";
-			if(file_exists($f)) $final["App : ".ucwords($dir)]=$dir;
+		if(is_dir(ROOT)) {
+			$final["Logiks Core"]=ROOT;
+			
+			$appFolder=ROOT."apps/";
+			$fs=scandir($appFolder);
+			
+			foreach ($fs as $dir) {
+				$f=$appFolder.$dir."/apps.cfg";
+				if(file_exists($f)) $final["App : ".ucwords($dir)]=$dir;
+			}
 		}
+		if(is_array($_ENV['TEST_FOLDERS'])) {
+			$final=array_merge($final,$_ENV['TEST_FOLDERS']);
+		} elseif(is_dir($_ENV['TEST_FOLDERS'])) {
+			$final[dirname($_ENV['TEST_FOLDERS'])]=$_ENV['TEST_FOLDERS'];
+		}
+		
 		return $final;
 	}
 	function findTests($src) {
 		$searchResults=array();
-		$path=[];
-		switch ($src) {
-			case './':
-			case 'core':
-				$path[]=TEST_ROOT;
-				$path[]=ROOT."plugins/";
-				$path[]=ROOT."pluginsDev/";
-				break;
-
-			default:
-		}
-		foreach ($path as $f) {
-			$temp=scanTestDir($f);
-			$searchResults=array_merge($searchResults,$temp);
+		if(is_dir($src)) {
+			$path=[$src];
+			foreach ($path as $f) {
+				$temp=scanTestDir($f);
+				$searchResults=array_merge($searchResults,$temp);
+			}
 		}
 		return $searchResults;
 	}
@@ -88,6 +94,9 @@ if(!function_exists("findTestCases")) {
 		foreach($files as $name => $info) {
 			$fp=(substr($name, strlen($path)));
 			$fn=basename($name);
+			$start=current(explode("/",$fp));
+			if(in_array($start,$_ENV['EXCLUDE_SEARCH'])) continue;
+			
 			//if(strpos("#".$fp,"tests/")) {
 			if(strpos("#".$fn,"test_")) {
 				$fxx=substr($name, strlen($_ENV['logiksPath']));
