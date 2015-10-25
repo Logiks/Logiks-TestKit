@@ -27,7 +27,7 @@ if(!function_exists("findTestCases")) {
 		$_ENV['resourcePath']="http://{$_SERVER["HTTP_HOST"]}/{$_ENV['logiksFolder']}";
 
 		if(!is_dir($_ENV['tmpPath'])) {
-			mkdir($_ENV['tmpPath'],0777,true);
+			@mkdir($_ENV['tmpPath'],0777,true);
 		}
 		if(!is_writable($_ENV['tmpPath'])) {
 			exit("<h1 align=center>TMP path is not writtable.</h1>");
@@ -59,11 +59,13 @@ if(!function_exists("findTestCases")) {
 			$final["Logiks Core"]=ROOT;
 			
 			$appFolder=ROOT."apps/";
-			$fs=scandir($appFolder);
+			if(is_dir($appFolder)) {
+				$fs=scandir($appFolder);
 			
-			foreach ($fs as $dir) {
-				$f=$appFolder.$dir."/apps.cfg";
-				if(file_exists($f)) $final["App : ".ucwords($dir)]=$dir;
+				foreach ($fs as $dir) {
+					$f=$appFolder.$dir."/apps.cfg";
+					if(file_exists($f)) $final["App : ".ucwords($dir)]=$dir;
+				}
 			}
 		}
 		if(is_array($_ENV['TEST_FOLDERS'])) {
@@ -79,8 +81,12 @@ if(!function_exists("findTestCases")) {
 		if(is_dir($src)) {
 			$path=[$src];
 			foreach ($path as $f) {
-				$temp=scanTestDir($f);
-				$searchResults=array_merge($searchResults,$temp);
+				try {
+					$temp=scanTestDir($f);
+					$searchResults=array_merge($searchResults,$temp);
+				} catch(Exception $e) {
+
+				}
 			}
 		}
 		return $searchResults;

@@ -12,8 +12,7 @@ class Logiks_Printer extends PHPUnit_TextUI_ResultPrinter {
     }
 
     public function write($buffer) {
-    	$buffer=str_replace("PHPUnit 3.7.28 by Sebastian Bergmann.\n\n", "", $buffer);
-		//$buffer=trim($buffer);
+        $buffer=preg_replace("/PHPUnit [0-9.]+ by Sebastian Bergmann.\\n\\n/", "", $buffer);
 		
 	    $buffer = nl2br($buffer);
 

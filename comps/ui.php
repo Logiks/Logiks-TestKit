@@ -10,8 +10,8 @@ $css=array(
 		//"{$_ENV['resourcePath']}misc/themes/default/jquery.ui.css",
 	);
 $js=array(
-		"{$_ENV['resourcePath']}misc/themes/default/js/jquery/jquery.js",
-        "{$_ENV['resourcePath']}misc/themes/default/js/jquery/jquery.cookie.js",
+		"assets/jquery.js",
+        "assets/jquery.cookie.js",
 		"assets/bootstrap.min.js",
 		"assets/metisMenu.min.js",
 		"assets/script.js",
