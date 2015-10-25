@@ -22,10 +22,6 @@ if(!function_exists("findTestCases")) {
 	function setupEnviroment() {
 		define('WEBROOT',"http://{$_SERVER["HTTP_HOST"]}".dirname($_SERVER['REQUEST_URI'])."/");
 
-		$_ENV['logiksPath']=ROOT;
-		$_ENV['logiksFolder']=basename(ROOT)."/";
-		$_ENV['resourcePath']="http://{$_SERVER["HTTP_HOST"]}/{$_ENV['logiksFolder']}";
-
 		if(!is_dir($_ENV['tmpPath'])) {
 			@mkdir($_ENV['tmpPath'],0777,true);
 		}
@@ -53,10 +49,12 @@ if(!function_exists("findTestCases")) {
 		}
 	}
 	function findTestGroups() {
-		$final=array("My Tests"=>TEST_ROOT);
+		if(isset($_SESSION['TESTGROUPS'])) return $_SESSION['TESTGROUPS'];
+
+		$final=array(md5(TEST_ROOT)=>array("title"=>"My Tests","path"=>TEST_ROOT));
 		
-		if(is_dir(ROOT)) {
-			$final["Logiks Core"]=ROOT;
+		if(is_dir(ROOT) && is_dir(ROOT."apps/")) {
+			$final[md5(ROOT)]=array("title"=>"Logiks Core","path"=>ROOT);
 			
 			$appFolder=ROOT."apps/";
 			if(is_dir($appFolder)) {
@@ -64,29 +62,30 @@ if(!function_exists("findTestCases")) {
 			
 				foreach ($fs as $dir) {
 					$f=$appFolder.$dir."/apps.cfg";
-					if(file_exists($f)) $final["App : ".ucwords($dir)]=$dir;
+					if(file_exists($f)) {
+						$final[md5($dir)]=array("title"=>"App : ".ucwords($dir),"path"=>$dir);
+					}
 				}
 			}
 		}
 		if(is_array($_ENV['TEST_FOLDERS'])) {
-			$final=array_merge($final,$_ENV['TEST_FOLDERS']);
+			foreach ($_ENV['TEST_FOLDERS'] as $dir) {
+				$final[md5($dir)]=array("title"=>dirname($dir),"path"=>$dir);
+			}
 		} elseif(is_dir($_ENV['TEST_FOLDERS'])) {
-			$final[dirname($_ENV['TEST_FOLDERS'])]=$_ENV['TEST_FOLDERS'];
+			$final[md5($_ENV['TEST_FOLDERS'])]=array("title"=>dirname($_ENV['TEST_FOLDERS']),"path"=>$_ENV['TEST_FOLDERS']);
 		}
-		
+		$_SESSION['TESTGROUPS']=$final;
 		return $final;
 	}
 	function findTests($src) {
 		$searchResults=array();
 		if(is_dir($src)) {
-			$path=[$src];
-			foreach ($path as $f) {
-				try {
-					$temp=scanTestDir($f);
-					$searchResults=array_merge($searchResults,$temp);
-				} catch(Exception $e) {
+			try {
+				$temp=scanTestDir($src);
+				$searchResults=array_merge($searchResults,$temp);
+			} catch(Exception $e) {
 
-				}
 			}
 		}
 		return $searchResults;
@@ -105,14 +104,15 @@ if(!function_exists("findTestCases")) {
 			
 			//if(strpos("#".$fp,"tests/")) {
 			if(strpos("#".$fn,"test_")) {
-				$fxx=substr($name, strlen($_ENV['logiksPath']));
-				$fx=explode("_", str_replace(".php", "", basename($fxx)));
+				$fxx=str_replace(ROOT,"",$name);//substr($name, strlen(ROOT))
+				$fx=explode("_", str_replace(".php", "", basename($fn)));
 				if(count($fx)<=2) {
 					array_shift($fx);
 					$tests['generic'][] = array(
 							"path"=>$fxx,
 							"name"=>implode(" ", $fx),
 							"category"=>"",
+							"basepath"=>$path,
 						);
 				} else {
 					$category=$fx[1];
@@ -122,10 +122,12 @@ if(!function_exists("findTestCases")) {
 							"path"=>$fxx,
 							"name"=>implode(" ", $fx),
 							"category"=>$category,
+							"basepath"=>$path,
 						);
 				}
 			}
 		}
+		
 		return $tests;
 	}
 }

@@ -4,7 +4,7 @@ if(!defined('TEST_ROOT')) exit('Only Test System Should Access Me');
 $fileSrc=ROOT.$_REQUEST['src'];
 
 if(!file_exists($fileSrc)) {
-	exit("Sorry, the test file could not be foun at : <span class='error fil'>$fileSrc</span>");
+	exit("Sorry, the test file could not be found at : <span class='error fil'>$fileSrc</span>");
 }
 
 //Simulate the Server if not found

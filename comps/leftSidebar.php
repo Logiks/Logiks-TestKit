@@ -6,9 +6,10 @@
                 <ul class="nav nav-second-level">
                     <?php
                         $groups=findTestGroups();
-                        foreach ($groups as $title => $rel) {
+                        foreach ($groups as $hash => $params) {
+                            $title=$params['title'];
                             echo "<li class='group'>
-                                        <a href='#{$rel}'><i class='fa fa-folder fa-fw'></i> {$title} <i class='fa fa-chevron-right pull-right'></i></a>
+                                        <a href='#{$hash}'><i class='fa fa-folder fa-fw'></i> {$title} <i class='fa fa-chevron-right pull-right'></i></a>
                                     </li>";
                         }
                     ?>

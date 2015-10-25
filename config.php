@@ -4,7 +4,7 @@ if(!defined('TEST_ROOT')) exit('Only Test System Should Access Me');
 
 $testHead="Logiks TestKit v1.0";
 
-define('ROOT',dirname(__DIR__)."/");
+define('ROOT',__DIR__."/");
 //define('ROOT', '/srcspace/wwwLogiks/devlogiks/');
 
 //$_ENV['tmpPath']=ROOT."/tmp/testKit/";
@@ -13,7 +13,7 @@ $_ENV['tmpPath']=TEST_ROOT."/tmp/";
 
 $_ENV['TEST_FOLDERS']=array();
 
-$_ENV['EXCLUDE_SEARCH']="api,tmp,apps,userdata,data";
+$_ENV['EXCLUDE_SEARCH']=basename(__DIR__).",api,tmp,apps,userdata,data";
 
 
 
