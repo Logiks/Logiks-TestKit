@@ -19,10 +19,12 @@ $_ENV['EXCLUDE_SEARCH']=basename(__DIR__).",api,tmp,apps,userdata,data";
 
 $_ENV['errorComp']=TEST_ROOT."comps/error.php";
 
-$_ENV['TEST_PRINTER']="Logiks_Printer";
+$_ENV['TEST_PRINTER']="TestKit_Printer";
 
 $_ENV['PHPUNIT_PARAMS']="--verbose";//--verbose  --tap  --debug
 
 $_ENV['ENABLE_LOGS']=false;
+
+$_ENV['ENABLE_LOGIKS']=false;
 
 ?>
