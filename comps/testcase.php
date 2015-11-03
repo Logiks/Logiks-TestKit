@@ -32,7 +32,7 @@ if($_ENV['ENABLE_LOGIKS']) {
 
 	include_once ROOT. "api/initialize.php";
 
-	include_once TEST_ROOT."api/Logiks_TestCase.php";
+	include_once TEST_ROOT."api/LogiksTestCase.php";
 }
 
 // make sure PHPUnit is autoloaded

@@ -11,7 +11,7 @@ if(defined('ROOT')) exit('Only Direct Access Is Allowed');
 define('TEST_ROOT',dirname(__FILE__) . '/');
 
 include_once TEST_ROOT."config.php";
-include_once TEST_ROOT."api.php";
+include_once TEST_ROOT."api/api.php";
 
 setupEnviroment();
 

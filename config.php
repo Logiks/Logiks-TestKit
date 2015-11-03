@@ -11,7 +11,9 @@ define('ROOT',__DIR__."/");
 $_ENV['tmpPath']=TEST_ROOT."/tmp/";
 
 
-$_ENV['TEST_FOLDERS']=array();
+$_ENV['TEST_FOLDERS']=array(
+		'devlogiks440'=>'/srcspace/wwwLogiks/devlogiks/'
+	);
 
 $_ENV['EXCLUDE_SEARCH']=basename(__DIR__).",api,tmp,apps,userdata,data";
 

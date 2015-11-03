@@ -69,8 +69,12 @@ if(!function_exists("findTestCases")) {
 			}
 		}
 		if(is_array($_ENV['TEST_FOLDERS'])) {
-			foreach ($_ENV['TEST_FOLDERS'] as $dir) {
-				$final[md5($dir)]=array("title"=>dirname($dir),"path"=>$dir);
+			foreach ($_ENV['TEST_FOLDERS'] as $nx=>$dir) {
+				if(is_numeric($nx)) {
+					$final[md5($dir)]=array("title"=>basename($dir),"path"=>$dir);
+				} else {
+					$final[md5($dir)]=array("title"=>$nx,"path"=>$dir);
+				}
 			}
 		} elseif(is_dir($_ENV['TEST_FOLDERS'])) {
 			$final[md5($_ENV['TEST_FOLDERS'])]=array("title"=>dirname($_ENV['TEST_FOLDERS']),"path"=>$_ENV['TEST_FOLDERS']);
