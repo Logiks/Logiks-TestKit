@@ -27,6 +27,6 @@ $_ENV['PHPUNIT_PARAMS']="--verbose";//--verbose  --tap  --debug
 
 $_ENV['ENABLE_LOGS']=false;
 
-$_ENV['ENABLE_LOGIKS']=false;
+$_ENV['LOAD_CONFIG']=array();
 
 ?>
