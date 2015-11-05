@@ -1,38 +1,32 @@
 <?php
 if(!defined('TEST_ROOT')) exit('Only Test System Should Access Me');
 
-$fileSrc=ROOT.$_REQUEST['src'];
+if(file_exists($_REQUEST['src'])) {
+	$fileSrc=$_REQUEST['src'];
+} else {
+	$fileSrc=ROOT.$_REQUEST['src'];
+}
 
 if(!file_exists($fileSrc)) {
-	exit("Sorry, the test file could not be foun at : <span class='error fil'>$fileSrc</span>");
+	exit("Sorry, the test file could not be found at : <span class='error fil'>$fileSrc</span>");
 }
 
-//Simulate the Server if not found
-if(isset($_SERVER) && count($_SERVER)>0) {
-	$GLOBALS['LOGIKS']["_SERVER"]=$_SERVER;
-} else {
-	$GLOBALS['LOGIKS']["_SERVER"]=array();
+require_once('PHPUnit/Autoload.php');
 
-	$GLOBALS['LOGIKS']["_SERVER"]['SERVER_NAME']='localhost';
-	$GLOBALS['LOGIKS']["_SERVER"]['SERVER_ADDR']='127.0.0.1';
-	$GLOBALS['LOGIKS']["_SERVER"]['SERVER_PORT']='80';
-	$GLOBALS['LOGIKS']["_SERVER"]['REMOTE_ADDR']='127.0.0.1';
-	$GLOBALS['LOGIKS']["_SERVER"]['DOCUMENT_ROOT']='/srcspace/wwwLogiks';
-	$GLOBALS['LOGIKS']["_SERVER"]['REQUEST_SCHEME']='http';
-	$GLOBALS['LOGIKS']["_SERVER"]['SCRIPT_FILENAME']='/srcspace/wwwLogiks/devlogiks/index.php';
-	$GLOBALS['LOGIKS']["_SERVER"]['REQUEST_METHOD']='GET';
-	$GLOBALS['LOGIKS']["_SERVER"]['QUERY_STRING']='';
-	$GLOBALS['LOGIKS']["_SERVER"]['REQUEST_URI']='/devlogiks/';
-	$GLOBALS['LOGIKS']["_SERVER"]['SCRIPT_NAME']='/devlogiks/index.php';
-	$GLOBALS['LOGIKS']["_SERVER"]['PHP_SELF']='/devlogiks/index.php';
-	$GLOBALS['LOGIKS']["_SERVER"]['ACTUAL_URI']='/devlogiks/';
-	$GLOBALS['LOGIKS']["_SERVER"]['REQUEST_PATH']='http://localhost:82/devlogiks/';
+if(isset($_ENV['LOAD_CONFIG']) && is_array($_ENV['LOAD_CONFIG'])) {
+	foreach($_ENV['LOAD_CONFIG'] as $f) {
+		if(file_exists($f)) {
+			include $f;
+		}
+	}
 }
 
-include_once ROOT. "api/initialize.php";
+$bootFile=dirname($fileSrc)."/boot_test.php";
+if(file_exists($bootFile)) {
+	include $bootFile;
+}
 
 // make sure PHPUnit is autoloaded
-require_once('PHPUnit/Autoload.php');
 
 $version = PHPUnit_Runner_Version::id();
 if (version_compare($version, "3.6.0") < 0) {
@@ -42,8 +36,6 @@ if (version_compare($version, "3.6.0") < 0) {
 set_time_limit(0); // make the script execution time unlimited (otherwise the request may time out)
 
 ob_end_clean(); // cleans and ends existing output buffering
-
-include_once TEST_ROOT."api/Logiks_TestCase.php";
 
 //Config Params
 $timestamp=date("H-i-s");//Y-m-d-

@@ -15,10 +15,10 @@ body {
 }
 .hiddenbox {display: none;}
 .ajaxloading {
-    background: transparent url(../../misc/themes/default/images/ajax/loading.gif) no-repeat center center;
+    background: transparent url(images/loading.gif) no-repeat center center;
 }
 .ajaxloading-mini {
-    background: transparent url(../../misc/themes/default/images/ajax/loading3.gif) no-repeat center 100px;
+    background: transparent url(images/loading3.gif) no-repeat center 100px;
 }
 .ajaxloading.large {
   padding: 30px;

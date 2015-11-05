@@ -1,7 +1,7 @@
 <?php
 if(!defined('TEST_ROOT')) exit('Only Test System Should Access Me');
 
-class Logiks_Printer extends PHPUnit_TextUI_ResultPrinter {
+class TestKit_Printer extends PHPUnit_TextUI_ResultPrinter {
 
     public function __construct($out = NULL, $verbose = FALSE, $colors = FALSE, $debug = FALSE) {
         ob_start(); // start output buffering, so we can send the output to the browser in chunks
@@ -12,8 +12,7 @@ class Logiks_Printer extends PHPUnit_TextUI_ResultPrinter {
     }
 
     public function write($buffer) {
-    	$buffer=str_replace("PHPUnit 3.7.28 by Sebastian Bergmann.\n\n", "", $buffer);
-		//$buffer=trim($buffer);
+        $buffer=preg_replace("/PHPUnit [0-9.]+ by Sebastian Bergmann.\\n\\n/", "", $buffer);
 		
 	    $buffer = nl2br($buffer);
 
