@@ -43,7 +43,7 @@ class TestKit_Printer extends PHPUnit_TextUI_ResultPrinter {
         }
     }
 
-    public function writeWithColor($color, $text) {
+    public function writeWithColor($color, $text, $lf = true) {
         $this->write('<div class="color $color">');
         parent::writeWithColor($color, $text);
         $this->write('</div>');
